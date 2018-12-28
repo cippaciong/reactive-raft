@@ -20,12 +20,9 @@ public class Receiver {
     private static final Logger LOGGER = Logger.getLogger(Receiver.class.getName());
 
     private MulticastSocket socket = null;
-    private String address = "230.0.0.0";   // Multicast address
-    /**
-     * The port is randomized (range 4000-5000) so that we can run
-     * multiple instances on different ports for testing purposes
-     */
-    private int port = getRandomPort();
+    // Multicast address and port form the multicast group
+    private String address = "230.0.0.0";
+    private int port = 4446;
     private byte[] buf = new byte[256];
 
     /**

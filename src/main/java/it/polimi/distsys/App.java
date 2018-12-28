@@ -6,6 +6,7 @@ import io.reactivex.observables.ConnectableObservable;
 import io.reactivex.schedulers.Schedulers;
 import it.polimi.distsys.server.multicast.Receiver;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -13,14 +14,13 @@ import java.util.logging.Logger;
  * Hello world!
  *
  */
-public class App 
-{
+public class App {
+    private static final Logger LOGGER = Logger.getLogger(App.class.getName());
+    private static final UUID id = UUID.randomUUID();
+
     public static void main( String[] args ) throws InterruptedException {
-
-        final Logger LOGGER = Logger.getLogger(App.class.getName());
-
         Receiver receiver = new Receiver();
-        LOGGER.info("TCP Receiver listening on port: " + receiver.getPort());
+        LOGGER.info("App with id: " + id);
 
         Observable<String> messages = receiver.getData();
         ConnectableObservable<String> obs = messages.publish();
@@ -33,13 +33,13 @@ public class App
                         Observable.just("Fallback"))
                 .map(msg -> handleMessage(msg))
                 .subscribe(
-                        msg -> LOGGER.info("Subscriber 1:"+ receiver.getPort() + " got message " + msg),
+                        msg -> LOGGER.info("Subscriber 1:" + id + " got message " + msg),
                         error -> LOGGER.info(("Timeout reached, start new election"))
                 );
 
 
         obs.subscribeOn(Schedulers.io())
-                .subscribe(msg -> System.out.println("Subscriber 2:"+ receiver.getPort() + " got message " + msg));
+                .subscribe(msg -> LOGGER.info("Subscriber 2:" + id + " got message " + msg));
 
         LOGGER.info("Sleeping for 1000ms");
         Thread.sleep(1000);
@@ -60,7 +60,7 @@ public class App
         long leftLimit = 5L;
         long rightLimit = 10L;
         long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
-        System.out.println("Sleep Time: " + generatedLong);
+        LOGGER.info("Sleep Time: " + generatedLong);
         return generatedLong;
     }
 
