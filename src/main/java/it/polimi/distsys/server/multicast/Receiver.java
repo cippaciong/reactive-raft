@@ -7,7 +7,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /**
  * Receiver class implements a TCP multicast receiver that
@@ -16,8 +15,6 @@ import java.util.logging.Logger;
  * message received on TCP multicast.
  */
 public class Receiver {
-
-    private static final Logger LOGGER = Logger.getLogger(Receiver.class.getName());
 
     private MulticastSocket socket = null;
     // Multicast address and port form the multicast group
